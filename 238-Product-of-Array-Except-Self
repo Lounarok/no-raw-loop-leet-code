@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        deque<int> right;
+        inclusive_scan(nums.rbegin(),nums.rend()-1, front_inserter(right), std::multiplies<>{},1 );
+        right.push_back(1);
+
+        vector<int> left;
+        left.reserve(nums.size());
+        left.push_back(1);
+        inclusive_scan(nums.begin(),nums.end()-1, back_inserter(left),std::multiplies<>{},1);
+
+        vector<int> ret;
+        ret.reserve(nums.size());        
+        std::transform(left.begin(),left.end(),
+                        right.begin(),
+                        std::back_inserter(ret),
+                        std::multiplies<int>{});
+        return ret;
+        
+    }
+};
